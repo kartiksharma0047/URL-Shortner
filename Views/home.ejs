@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      table{
+        margin-top: 3rem;
+      }
+      th,td{
+        border: 1px solid black;
+        text-align: center;
+        width: max-content;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL Shortner</h1>
+    <% if(locals.id){ %>
+    <p>
+      URL Generated:
+      <a target="_blank" href="http://localhost:8000/url/<%= id %>"
+        >http://localhost:8000/url/<%= id %></a
+      >
+    </p>
+    <% } %>
+    <div>
+      <form method="POST" action="/url">
+        <label>Enter Your Original URL :</label>
+        <input type="text" name="url" placeholder="https://www.example.com" />
+        <button type="submit">Generate</button>
+      </form>
+    </div>
+    <div>
+      <% if (locals.urls) { %>
+      <table>
+        <thead>
+          <th>Serial No.</th>
+          <th>ShortId</th>
+          <th>Redirect</th>
+          <th>Clicks</th>
+          <th>Links</th>
+        </thead>
+        <tbody>
+          <% urls.forEach((url,index) => { %>
+          <tr>
+            <td><%= index+1 %></td>
+            <td><%= url.shortId %></td>
+            <td><%= url.redirectURL %></td>
+            <td><%= url.visitHistory.length %></td>
+            <td>
+              <a target="_blank" href="http://localhost:8000/url/<%= url.shortId %>">
+                Click Here
+              </a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>
