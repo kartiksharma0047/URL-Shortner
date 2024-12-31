@@ -5,6 +5,8 @@ import URL from './Models/url.js'
 import path from 'path'
 import staticRoute from './Routes/staticRouter.js'
 import userRouter from './Routes/user.js'
+import cookieParser from 'cookie-parser'
+import {restrictToLoggedInUserOnly,checkAuth} from './Middleware/auth.js'
 
 const app=express();
 const PORT=8000;
@@ -16,9 +18,10 @@ app.set('views',path.resolve("./Views"));    // Here my Server is getting the pa
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
+app.use(cookieParser());
 
-app.use('/url',URLRouter);
-app.use("/",staticRoute);
+app.use('/url',restrictToLoggedInUserOnly,URLRouter);
+app.use("/",checkAuth,staticRoute);
 app.use('/user',userRouter);
 
 app.get("/test",async (req,res)=>{
