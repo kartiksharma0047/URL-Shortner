@@ -7,11 +7,13 @@ import staticRoute from './Routes/staticRouter.js'
 import userRouter from './Routes/user.js'
 import cookieParser from 'cookie-parser'
 import {restrictToLoggedInUserOnly,checkAuth} from './Middleware/auth.js'
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app=express();
-const PORT=8000;
+const PORT=process.env.PORT;
 
-connectToMongoDB('mongodb://127.0.0.1:27017/short-url').then(()=>{console.log('MongoDb Connected')});
+connectToMongoDB(process.env.MONGO_URI).then(()=>{console.log('MongoDb Connected')});
 
 app.set('view engine',"ejs");      // Here EJS template is set up
 app.set('views',path.resolve("./Views"));    // Here my Server is getting the path of HTML files
